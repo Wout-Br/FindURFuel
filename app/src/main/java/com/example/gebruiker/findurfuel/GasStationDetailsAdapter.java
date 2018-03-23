@@ -1,6 +1,7 @@
 package com.example.gebruiker.findurfuel;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
- * Created by gebruiker on 4/03/2018.
+ * Created by Wout Briels on 4/03/2018.
  */
 
 public class GasStationDetailsAdapter extends RecyclerView.Adapter<GasStationDetailsAdapter.GasStationDetailsAdapterViewHolder> {
 
     private String[] gasStationData;
+
+    private Cursor cursor;
 
     private final GasStationDetailsOnClickHandler gasStationDetailsClickHandler;
 

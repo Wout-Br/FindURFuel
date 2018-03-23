@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="com.example.gebruiker.findurfuel.SettingsFragment"
+    android:id="@+id/gasstation_settings_fragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/settings_textview1"
-        android:textSize="20sp"/>
-</FrameLayout>
+    android:layout_height="match_parent" />

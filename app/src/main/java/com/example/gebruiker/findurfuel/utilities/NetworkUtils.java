@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 /**
- * Created by gebruiker on 2/03/2018.
+ * Created by Wout Briels on 2/03/2018.
  */
 
 public final class NetworkUtils {

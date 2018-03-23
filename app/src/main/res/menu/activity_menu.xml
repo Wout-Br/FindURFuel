@@ -13,6 +13,6 @@
         android:id="@+id/menu_refresh"
         android:title="@string/menu_refresh"
         android:orderInCategory="1"
-        app:showAsAction="never"
+        app:showAsAction="ifRoom"
         />
 </menu>

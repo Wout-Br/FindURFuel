@@ -19,22 +19,23 @@ public class GasStationDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        final String SQL_CREATE_GASSTATION_DETAILS = "CREATE DETAILS" + GasStationContract.GasStationEntry.GASSTATION_NAME + " (" +
+        final String SQL_CREATE_GASSTATION_TABLE = "CREATE DETAILS" + GasStationContract.GasStationEntry.TABLE_NAME + " (" +
                 GasStationContract.GasStationEntry._ID + "INTEGER PRIMARY KEY AUTOINCREMENT? " +
-                GasStationContract.GasStationEntry.GASSTATION_ADDRESS + "REAL, " +
-                GasStationContract.GasStationEntry.GASSTATION_LAT + "REAL, " +
-                GasStationContract.GasStationEntry.GASSTATION_LNG + "REAL, " +
-                GasStationContract.GasStationEntry.GASSTATION_HEIGTH + "REAL, " +
-                GasStationContract.GasStationEntry.GASSTATION_WIDTH + "REAL, " +
-                GasStationContract.GasStationEntry.GASSTATION_RATING + "REAL, " +
-                GasStationContract.GasStationEntry.GASSTATION_OPEN + "REAL, " + "); ";
+                GasStationContract.GasStationEntry.COLUMN_NAME + "TEXT NOT NULL, " +
+                GasStationContract.GasStationEntry.COLUMN_ADDRESS + "TEXT NOT NULL, " +
+                GasStationContract.GasStationEntry.COLUMN_LAT + "DOUBLE NOT NULL, " +
+                GasStationContract.GasStationEntry.COLUMN_LNG + "DOUBLE NOT NULL, " +
+                GasStationContract.GasStationEntry.COLUMN_HEIGTH + "DOUBLE NOT NULL, " +
+                GasStationContract.GasStationEntry.COLUMN_WIDTH + "DOUBLE NOT NULL, " +
+                GasStationContract.GasStationEntry.COLUMN_RATING + "DOUBLE NOT NULL, " +
+                GasStationContract.GasStationEntry.COLUMN_OPEN + "BOOLEAN NOT NULL, " + "); ";
 
-        sqLiteDatabase.execSQL(SQL_CREATE_GASSTATION_DETAILS);
+        sqLiteDatabase.execSQL(SQL_CREATE_GASSTATION_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP DETAILS IF EXISTS " + GasStationContract.GasStationEntry.GASSTATION_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GasStationContract.GasStationEntry.COLUMN_NAME);
         onCreate(sqLiteDatabase);
         onCreate(sqLiteDatabase);
     }

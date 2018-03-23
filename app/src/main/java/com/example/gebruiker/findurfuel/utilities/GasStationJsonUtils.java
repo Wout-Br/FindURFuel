@@ -9,12 +9,12 @@ import org.json.JSONObject;
 import java.net.HttpURLConnection;
 
 /**
- * Created by gebruiker on 2/03/2018.
+ * Created by Wout Briels on 2/03/2018.
  */
 
 public class GasStationJsonUtils {
 
-    public static String[] getSimpleGasSatationDetails (Context context, String detailsJsonString) throws JSONException {
+    public static String[] getSimpleGasStationDetails(Context context, String detailsJsonString) throws JSONException {
 
         final  String GS_LIST = "results";
         final String GS_ADDRESS = "formatted_address";
