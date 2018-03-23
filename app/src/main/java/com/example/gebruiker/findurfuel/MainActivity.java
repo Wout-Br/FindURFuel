@@ -2,8 +2,7 @@ package com.example.gebruiker.findurfuel;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -18,15 +17,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.gebruiker.findurfuel.data.GasStationContract;
-import com.example.gebruiker.findurfuel.data.GasStationDbHelper;
 import com.example.gebruiker.findurfuel.data.GasStationPreferences;
 import com.example.gebruiker.findurfuel.utilities.GasStationJsonUtils;
 import com.example.gebruiker.findurfuel.utilities.NetworkUtils;
 
 import java.net.URL;
-
-import static com.example.gebruiker.findurfuel.data.GasStationContract.GasStationEntry.COLUMN_NAME;
 
 public class MainActivity extends AppCompatActivity implements GasStationDetailsAdapter.GasStationDetailsOnClickHandler,
         LoaderManager.LoaderCallbacks<String[]>, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -37,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
     private ProgressBar loadingIndicator;
     private static final int DETAILS_LOADER_ID = 0;
     private static boolean UPDATED_PREFERENCES = false;
-    private SQLiteDatabase sqLiteDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {        // Bundle om informatie te bewaren als app gedestroyed wordt!!
@@ -64,11 +58,6 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
         getSupportLoaderManager().initLoader(loaderId, bundleForLoader, callback);
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
-
-        GasStationDbHelper gasStationDbHelper = new GasStationDbHelper(this);
-        sqLiteDatabase = gasStationDbHelper.getWritableDatabase();
-
-        Cursor cursor = getAllDetails();
     }
 
     @Override
@@ -185,9 +174,5 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
     protected void onDestroy() {
         super.onDestroy();
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    private Cursor getAllDetails() {
-        return sqLiteDatabase.query(GasStationContract.GasStationEntry.TABLE_NAME, null, null, null, null, null, COLUMN_NAME);
     }
 }
