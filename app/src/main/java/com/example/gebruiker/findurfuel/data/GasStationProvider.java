@@ -96,8 +96,32 @@ public class GasStationProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        int numRowsDeleted;
+
+        if (null == selection) selection = "1";
+
+        switch (gUriMatcher.match(uri)) {
+
+//          COMPLETED (2) Only implement the functionality, given the proper URI, to delete ALL rows in the weather table
+            case CODE_GASSTATION:
+                numRowsDeleted = gasStationDbHelper.getWritableDatabase().delete(
+                        GasStationContract.GasStationEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        /* If we actually deleted any rows, notify that a change has occurred to this URI */
+        if (numRowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return numRowsDeleted;
     }
 
     @Override
