@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,6 +31,40 @@ public class GasStationProvider extends ContentProvider {
     public boolean onCreate() {
         gasStationDbHelper = new GasStationDbHelper(getContext());
         return true;
+    }
+
+    @Override
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
+        final SQLiteDatabase sqLiteDatabase = gasStationDbHelper.getWritableDatabase();
+
+        switch (gUriMatcher.match(uri)) {
+
+            case CODE_GASSTATION:
+                sqLiteDatabase.beginTransaction();
+                int rowsInserted = 0;
+                try {
+                    for (ContentValues value : values) {
+                        String  gasStationName = value.getAsString(GasStationContract.GasStationEntry.COLUMN_NAME);
+
+                        long _id = sqLiteDatabase.insert(GasStationContract.GasStationEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            rowsInserted++;
+                        }
+                    }
+                    sqLiteDatabase.setTransactionSuccessful();
+                } finally {
+                    sqLiteDatabase.endTransaction();
+                }
+
+                if (rowsInserted > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+
+                return rowsInserted;
+
+            default:
+                return super.bulkInsert(uri, values);
+        }
     }
 
     @Nullable
