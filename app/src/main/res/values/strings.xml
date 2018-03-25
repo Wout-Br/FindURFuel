@@ -9,5 +9,6 @@
     <string name="pref_settings_name">Location</string>
 
     <string name="error_message">An error has occured :( Please try again!</string>
+    <string name="content_authority">com.example.gebruiker.findurfuel</string>
 
 </resources>
