@@ -38,15 +38,14 @@ public class GasStationProvider extends ContentProvider {
         final SQLiteDatabase sqLiteDatabase = gasStationDbHelper.getWritableDatabase();
 
         switch (gUriMatcher.match(uri)) {
-
             case CODE_GASSTATION:
                 sqLiteDatabase.beginTransaction();
                 int rowsInserted = 0;
                 try {
-                    for (ContentValues value : values) {
-                        String  gasStationName = value.getAsString(GasStationContract.GasStationEntry.COLUMN_NAME);
+                    for (ContentValues contentValue : values) {
+                        String address = contentValue.getAsString(GasStationContract.GasStationEntry.COLUMN_NAME);
+                        long _id = sqLiteDatabase.insert(GasStationContract.GasStationEntry.TABLE_NAME, null, contentValue);
 
-                        long _id = sqLiteDatabase.insert(GasStationContract.GasStationEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             rowsInserted++;
                         }
@@ -67,10 +66,9 @@ public class GasStationProvider extends ContentProvider {
         }
     }
 
-    @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
-                        @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
+                        String[] selectionArgs, String sortOrder) {
         Cursor cursor;
 
         if (gUriMatcher.match(uri) == CODE_GASSTATION) {
@@ -83,49 +81,42 @@ public class GasStationProvider extends ContentProvider {
         return cursor;
     }
 
-    @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-        return null;
+        throw new RuntimeException("Implementation needed!!");
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
+        throw new RuntimeException("Implementation needed!!");
+    }
+
+    @Override
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         int numRowsDeleted;
 
-        if (null == selection) selection = "1";
+        if (selection == null) {
+            selection = "1";
+        }
 
         switch (gUriMatcher.match(uri)) {
-
-//          COMPLETED (2) Only implement the functionality, given the proper URI, to delete ALL rows in the weather table
             case CODE_GASSTATION:
                 numRowsDeleted = gasStationDbHelper.getWritableDatabase().delete(
-                        GasStationContract.GasStationEntry.TABLE_NAME,
-                        selection,
-                        selectionArgs);
-
+                        GasStationContract.GasStationEntry.TABLE_NAME, selection, selectionArgs);
                 break;
-
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        /* If we actually deleted any rows, notify that a change has occurred to this URI */
         if (numRowsDeleted != 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            getContext().getContentResolver().notifyChange(uri,null);
         }
 
         return numRowsDeleted;
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int update(@NonNull Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+        throw new RuntimeException("Implementation needed!!");
     }
 }
