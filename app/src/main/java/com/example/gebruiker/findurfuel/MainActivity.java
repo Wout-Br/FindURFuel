@@ -3,9 +3,12 @@ package com.example.gebruiker.findurfuel;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.gebruiker.findurfuel.data.GasStationContract;
 import com.example.gebruiker.findurfuel.data.GasStationPreferences;
 import com.example.gebruiker.findurfuel.utilities.GasStationJsonUtils;
 import com.example.gebruiker.findurfuel.utilities.NetworkUtils;
@@ -24,14 +28,22 @@ import com.example.gebruiker.findurfuel.utilities.NetworkUtils;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements GasStationDetailsAdapter.GasStationDetailsOnClickHandler,
-        LoaderManager.LoaderCallbacks<String[]>, SharedPreferences.OnSharedPreferenceChangeListener {
+        LoaderManager.LoaderCallbacks<Cursor> {
+
+    // String of details showing in main activity list
+    public static final String[] MAIN_DETAILS_PROJECTION = {
+            GasStationContract.GasStationEntry.COLUMN_NAME,
+            GasStationContract.GasStationEntry.COLUMN_ADDRESS,
+    };
+
+    public static final int INDEX_GASSTATION_NAME = 0;
+    public static final int INDEX_GASSTATION_ADDRESS = 1;
 
     private RecyclerView recyclerView;
+    private int position = RecyclerView.NO_POSITION;
     private  GasStationDetailsAdapter gasStationDetailsAdapter;
-    private TextView errorMessage;
     private ProgressBar loadingIndicator;
     private static final int DETAILS_LOADER_ID = 0;
-    private static boolean UPDATED_PREFERENCES = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {        // Bundle om informatie te bewaren als app gedestroyed wordt!!
@@ -45,19 +57,18 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
 
         recyclerView.setHasFixedSize(true);
 
-        gasStationDetailsAdapter = new GasStationDetailsAdapter(this);
+        gasStationDetailsAdapter = new GasStationDetailsAdapter(this,this);
 
         recyclerView.setAdapter(gasStationDetailsAdapter);
 
-        errorMessage = (TextView) findViewById(R.id.error_message);
+        showLoading();
+
         loadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
 
         int loaderId = DETAILS_LOADER_ID;
-        LoaderManager.LoaderCallbacks<String[]> callback = MainActivity.this;
+        LoaderManager.LoaderCallbacks<Cursor> callback = MainActivity.this;
         Bundle bundleForLoader = null;
         getSupportLoaderManager().initLoader(loaderId, bundleForLoader, callback);
-
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -68,14 +79,19 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
     }
 
     private void showGasStationDataView() {
-        errorMessage.setVisibility(View.INVISIBLE);
+        loadingIndicator.setVisibility(View.INVISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
     }
 
-    private void showErrorMessage() {
+    private void showLoading() {
+        recyclerView.setVisibility(View.VISIBLE);
+        loadingIndicator.setVisibility(View.INVISIBLE);
+    }
+
+    /*private void showErrorMessage() {
         recyclerView.setVisibility(View.INVISIBLE);
         errorMessage.setVisibility(View.VISIBLE);
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
                 startActivity(intentForSettings);
                 break;
             case  (R.id.menu_refresh):
-                invalidateData();
                 getSupportLoaderManager().restartLoader(DETAILS_LOADER_ID, null, this);
         }
 
@@ -99,68 +114,38 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
     }
 
     @Override
-    public Loader<String[]> onCreateLoader(int id, Bundle args) {
-        return new AsyncTaskLoader<String[]>(this) {
+    public Loader<Cursor> onCreateLoader(int loaderId, Bundle bundle) {
+        switch (loaderId) {
+            case DETAILS_LOADER_ID:
+                Uri detailsQueryUri = GasStationContract.GasStationEntry.CONTENT_URI;
+                String sortOrder = GasStationContract.GasStationEntry.COLUMN_NAME;
 
-            String[] gasStationdata = null;
-
-            @Override
-            protected void onStartLoading() {
-                if (gasStationdata != null) {
-                    deliverResult(gasStationdata);
-                } else {
-                    loadingIndicator.setVisibility(View.VISIBLE);
-                    forceLoad();
-                }
-            }
-
-            @Override
-            public String[] loadInBackground() {
-                String location = GasStationPreferences.getPreferredLocation(MainActivity.this);
-                URL gasStationRequestUrl = NetworkUtils.buildUrl(location);
-
-                try {
-                    String jsonGasStationResponse = NetworkUtils.getResponseFromHttpUrl(gasStationRequestUrl);
-                    String[] screenGasStationData = GasStationJsonUtils.getSimpleGasStationDetails(MainActivity.this, jsonGasStationResponse);
-                    return screenGasStationData;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
-            @Override
-            public void deliverResult(String[] data) {
-                gasStationdata = data;
-                super.deliverResult(data);
-            }
-        };
-    }
-
-    @Override
-    public void onLoadFinished(Loader<String[]> loader, String[] data) {
-        loadingIndicator.setVisibility(View.INVISIBLE);
-        gasStationDetailsAdapter.setGasStationData(data);
-        if (data != null) {
-            showGasStationDataView();
-        } else {
-            showErrorMessage();
+                return new CursorLoader(this, detailsQueryUri, MAIN_DETAILS_PROJECTION,
+                                        null, null, sortOrder);
+            default:
+                throw new RuntimeException("Loader is not implemented: " + loaderId);
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<String[]> loader) {
-        // Not used but needed for program to work//
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        gasStationDetailsAdapter.swapCursor(data);
+        if (position == RecyclerView.NO_POSITION) {
+            position = 0;
+        }
+        recyclerView.smoothScrollToPosition(position);
+        if (data.getCount() != 0) {
+            showGasStationDataView();
+        }
     }
 
-    private void invalidateData() { gasStationDetailsAdapter.setGasStationData(null); }
-
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        UPDATED_PREFERENCES = true;
+    public void onLoaderReset(Loader<Cursor> loader) {
+        gasStationDetailsAdapter.swapCursor(null);
     }
 
-    @Override
+
+    /*@Override
     protected void onStart() {
         super.onStart();
 
@@ -174,5 +159,5 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
     protected void onDestroy() {
         super.onDestroy();
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
-    }
+    }*/
 }

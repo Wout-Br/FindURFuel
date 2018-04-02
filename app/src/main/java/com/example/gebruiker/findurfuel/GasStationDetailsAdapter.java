@@ -14,9 +14,8 @@ import android.widget.TextView;
 
 public class GasStationDetailsAdapter extends RecyclerView.Adapter<GasStationDetailsAdapter.GasStationDetailsAdapterViewHolder> {
 
-    private String[] gasStationData;
-
-    private Cursor cursor;
+    private final Context gContext;
+    private Cursor gCursor;
 
     private final GasStationDetailsOnClickHandler gasStationDetailsClickHandler;
 
@@ -24,26 +23,9 @@ public class GasStationDetailsAdapter extends RecyclerView.Adapter<GasStationDet
         void onClick(String detailsPerStation);
     }
 
-    public GasStationDetailsAdapter(GasStationDetailsOnClickHandler clickHandler) {
+    public GasStationDetailsAdapter(Context context, GasStationDetailsOnClickHandler clickHandler) {
+        gContext = context;
         gasStationDetailsClickHandler = clickHandler;
-    }
-
-    public class GasStationDetailsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        public final TextView gasStationTextView;
-
-        public GasStationDetailsAdapterViewHolder(View view) {
-            super(view);
-            gasStationTextView = (TextView) view.findViewById(R.id.gasStationData);
-            view.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            String detailsPerStation = gasStationData[adapterPosition];
-            gasStationDetailsClickHandler.onClick(detailsPerStation);
-        }
     }
 
     @Override
@@ -59,18 +41,51 @@ public class GasStationDetailsAdapter extends RecyclerView.Adapter<GasStationDet
 
     @Override
     public void onBindViewHolder(GasStationDetailsAdapterViewHolder gasStationDetailsAdapterViewHolder, int position) {
-        String singleGasStaion = gasStationData[position];
-        gasStationDetailsAdapterViewHolder.gasStationTextView.setText(singleGasStaion);
+        gCursor.moveToPosition(position);
+
+        /*******************
+         * Gas Station Summary *
+         *******************/
+
+        String name = gCursor.getString(MainActivity.INDEX_GASSTATION_NAME);
+        String address = gCursor.getString(MainActivity.INDEX_GASSTATION_ADDRESS);
+
+        String gasStationSummary = name + "\n" + address;
+        gasStationDetailsAdapterViewHolder.gasStationTextView.setText(gasStationSummary);
     }
 
     @Override
     public int getItemCount() {
-        if (null == gasStationData) return 0;
-        return gasStationData.length;
+        if (gCursor == null) {
+            return 0;
+        }
+        return gCursor.getCount();
     }
 
-    public void setGasStationData(String[] gasStationDataArray) {
+    void swapCursor(Cursor newCursor) {
+        gCursor = newCursor;
+        notifyDataSetChanged();
+    }
+
+    /*public void setGasStationData(String[] gasStationDataArray) {
         gasStationData = gasStationDataArray;
         notifyDataSetChanged();
+    }*/
+
+    public class GasStationDetailsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        public final TextView gasStationTextView;
+
+        public GasStationDetailsAdapterViewHolder(View view) {
+            super(view);
+            gasStationTextView = (TextView) view.findViewById(R.id.gasStationData);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            String detailsPerStation = gasStationTextView.getText().toString();
+            gasStationDetailsClickHandler.onClick(detailsPerStation);
+        }
     }
 }
