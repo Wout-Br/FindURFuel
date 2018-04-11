@@ -1,13 +1,10 @@
 package com.example.gebruiker.findurfuel;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 import android.database.Cursor;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -18,17 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.gebruiker.findurfuel.data.GasStationContract;
-import com.example.gebruiker.findurfuel.data.GasStationPreferences;
 import com.example.gebruiker.findurfuel.utilities.FakeDetailsUtils;
-import com.example.gebruiker.findurfuel.utilities.GasStationJsonUtils;
-import com.example.gebruiker.findurfuel.utilities.NetworkUtils;
 
-import java.net.URL;
-
-public class MainActivity extends AppCompatActivity implements GasStationDetailsAdapter.GasStationDetailsOnClickHandler,
+public class MainActivity extends AppCompatActivity implements DetailsAdapter.GasStationDetailsOnClickHandler,
         LoaderManager.LoaderCallbacks<Cursor> {
 
     // String of details showing in main activity list
@@ -42,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
 
     private RecyclerView recyclerView;
     private int position = RecyclerView.NO_POSITION;
-    private  GasStationDetailsAdapter gasStationDetailsAdapter;
+    private DetailsAdapter detailsAdapter;
     private ProgressBar loadingIndicator;
     private static final int DETAILS_LOADER_ID = 0;
 
@@ -60,9 +51,9 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
 
         recyclerView.setHasFixedSize(true);
 
-        gasStationDetailsAdapter = new GasStationDetailsAdapter(this,this);
+        detailsAdapter = new DetailsAdapter(this,this);
 
-        recyclerView.setAdapter(gasStationDetailsAdapter);
+        recyclerView.setAdapter(detailsAdapter);
 
         loadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
         showLoading();
@@ -131,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        gasStationDetailsAdapter.swapCursor(data);
+        detailsAdapter.swapCursor(data);
         if (position == RecyclerView.NO_POSITION) {
             position = 0;
         }
@@ -143,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        gasStationDetailsAdapter.swapCursor(null);
+        detailsAdapter.swapCursor(null);
     }
 
 

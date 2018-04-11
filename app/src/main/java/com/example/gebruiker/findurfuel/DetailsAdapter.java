@@ -12,7 +12,7 @@ import android.widget.TextView;
  * Created by Wout Briels on 4/03/2018.
  */
 
-public class GasStationDetailsAdapter extends RecyclerView.Adapter<GasStationDetailsAdapter.GasStationDetailsAdapterViewHolder> {
+public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStationDetailsAdapterViewHolder> {
 
     private final Context gContext;
     private Cursor gCursor;
@@ -23,7 +23,7 @@ public class GasStationDetailsAdapter extends RecyclerView.Adapter<GasStationDet
         void onClick(String detailsPerStation);
     }
 
-    public GasStationDetailsAdapter(Context context, GasStationDetailsOnClickHandler clickHandler) {
+    public DetailsAdapter(Context context, GasStationDetailsOnClickHandler clickHandler) {
         gContext = context;
         gasStationDetailsClickHandler = clickHandler;
     }
