@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.gebruiker.findurfuel.data.GasStationContract;
 import com.example.gebruiker.findurfuel.data.GasStationPreferences;
+import com.example.gebruiker.findurfuel.utilities.FakeDetailsUtils;
 import com.example.gebruiker.findurfuel.utilities.GasStationJsonUtils;
 import com.example.gebruiker.findurfuel.utilities.NetworkUtils;
 
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FakeDetailsUtils.insertFakeData(this);
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -61,9 +64,8 @@ public class MainActivity extends AppCompatActivity implements GasStationDetails
 
         recyclerView.setAdapter(gasStationDetailsAdapter);
 
-        showLoading();
-
         loadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
+        showLoading();
 
         int loaderId = DETAILS_LOADER_ID;
         LoaderManager.LoaderCallbacks<Cursor> callback = MainActivity.this;

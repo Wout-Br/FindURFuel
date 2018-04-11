@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FindURFuel.iml" filepath="$PROJECT_DIR$/FindURFuel.iml" />
+      <module fileurl="file://C:\Users\gebruiker\Documents\2BA IIW B1\App-ontwikkeling\FindURFuelv04.4\FindURFuel.iml" filepath="C:\Users\gebruiker\Documents\2BA IIW B1\App-ontwikkeling\FindURFuelv04.4\FindURFuel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FindURFuelv04.4.iml" filepath="$PROJECT_DIR$/FindURFuelv04.4.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

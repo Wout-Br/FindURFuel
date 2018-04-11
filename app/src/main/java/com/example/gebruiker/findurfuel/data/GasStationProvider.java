@@ -43,7 +43,7 @@ public class GasStationProvider extends ContentProvider {
                 int rowsInserted = 0;
                 try {
                     for (ContentValues contentValue : values) {
-                        String address = contentValue.getAsString(GasStationContract.GasStationEntry.COLUMN_NAME);
+                        //String address = contentValue.getAsString(GasStationContract.GasStationEntry.COLUMN_NAME);
                         long _id = sqLiteDatabase.insert(GasStationContract.GasStationEntry.TABLE_NAME, null, contentValue);
 
                         if (_id != -1) {
