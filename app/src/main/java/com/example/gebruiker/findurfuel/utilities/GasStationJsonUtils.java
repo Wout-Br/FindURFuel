@@ -14,35 +14,24 @@ import java.net.HttpURLConnection;
 
 public class GasStationJsonUtils {
 
-    public static String[] getSimpleGasStationDetails(Context context, String detailsJsonString) throws JSONException {
+    public static String[] getJsonGasStationDetails(Context context, String detailsJsonString) throws JSONException {
 
         final  String GS_LIST = "results";
-        final String GS_ADDRESS = "formatted_address";
         final String GS_NAME = "name";
-        final String GS_FUELTYPE = "types";
-        //final String GS_ICON = "icon";
-        // rating bijvoegen
+        final String GS_ADDRESS = "formatted_address";
+        final String GS_HEIGHT = "height";
+        final String GS_WIDTH = "width";
+        final String GS_LAT = "lat";
+        final String GS_LNG = "lng";
+        final String GS_OPEN = "open_now";
+        final String GS_RATING = "rating";
+        final String GS_ICON = "icon";
 
 
 
         String[] parsedGasStationData = null;
 
         JSONObject detailsJson = new JSONObject(detailsJsonString);
-
-        /*if (detailsJson.has(GS_MESSAGE_CODE)) {
-            int errorCode = detailsJson.getInt(GS_MESSAGE_CODE);
-
-            switch (errorCode) {
-                case HttpURLConnection.HTTP_OK;
-                break;
-
-                case HttpURLConnection.HTTP_NOT_FOUND;
-                    return null;
-                default:
-                    return null;
-            }
-        }*/
-
         JSONArray gasStationArray = detailsJson.getJSONArray(GS_LIST);
 
         parsedGasStationData = new String[gasStationArray.length()];
@@ -50,7 +39,6 @@ public class GasStationJsonUtils {
         for (int i = 0 ; i < gasStationArray.length() ; i++) {
             JSONObject singleGasStation = gasStationArray.getJSONObject(i);
             String name = singleGasStation.getString(GS_NAME);
-            String fuelType = singleGasStation.getString(GS_FUELTYPE);
             String address = singleGasStation.getString(GS_ADDRESS);
 
             parsedGasStationData[i] = name + "\n" + address;

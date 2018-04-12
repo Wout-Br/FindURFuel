@@ -2,6 +2,7 @@ package com.example.gebruiker.findurfuel;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,25 +21,25 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
     private final GasStationDetailsOnClickHandler gasStationDetailsClickHandler;
 
     public interface GasStationDetailsOnClickHandler {
-        void onClick(String detailsPerStation);
+        void onClick(String name);
     }
 
-    public DetailsAdapter(Context context, GasStationDetailsOnClickHandler clickHandler) {
+    public DetailsAdapter(@NonNull Context context, GasStationDetailsOnClickHandler clickHandler) {
         gContext = context;
         gasStationDetailsClickHandler = clickHandler;
     }
 
     @Override
     public GasStationDetailsAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.gasstation_list_item;
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
+        LayoutInflater layoutInflater = LayoutInflater.from(gContext);
+        View view = layoutInflater.inflate(layoutIdForListItem, viewGroup, false);
+        view.setFocusable(true);
 
-        View view = layoutInflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
         return new GasStationDetailsAdapterViewHolder(view);
     }
 
+    // For the details on the main activity !!
     @Override
     public void onBindViewHolder(GasStationDetailsAdapterViewHolder gasStationDetailsAdapterViewHolder, int position) {
         gCursor.moveToPosition(position);
@@ -49,8 +50,9 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
 
         String name = gCursor.getString(MainActivity.INDEX_GASSTATION_NAME);
         String address = gCursor.getString(MainActivity.INDEX_GASSTATION_ADDRESS);
+        String open = gCursor.getString(MainActivity.INDEX_GASSTATION_OPEN);
 
-        String gasStationSummary = name + "\n" + address;
+        String gasStationSummary = name + "   -   " + open + "\n" + address;
         gasStationDetailsAdapterViewHolder.gasStationTextView.setText(gasStationSummary);
     }
 
@@ -67,14 +69,9 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
         notifyDataSetChanged();
     }
 
-    /*public void setGasStationData(String[] gasStationDataArray) {
-        gasStationData = gasStationDataArray;
-        notifyDataSetChanged();
-    }*/
-
     public class GasStationDetailsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public final TextView gasStationTextView;
+        private final TextView gasStationTextView;
 
         public GasStationDetailsAdapterViewHolder(View view) {
             super(view);
@@ -82,10 +79,13 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
             view.setOnClickListener(this);
         }
 
+        // For the details on the detail activity !!
         @Override
         public void onClick(View v) {
-            String detailsPerStation = gasStationTextView.getText().toString();
-            gasStationDetailsClickHandler.onClick(detailsPerStation);
+            int adapterPosition = getAdapterPosition();
+            gCursor.moveToPosition(adapterPosition);
+            String name = gCursor.getString(MainActivity.INDEX_GASSTATION_NAME);
+            gasStationDetailsClickHandler.onClick(name);
         }
     }
 }

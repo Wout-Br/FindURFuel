@@ -26,10 +26,12 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
     public static final String[] MAIN_DETAILS_PROJECTION = {
             GasStationContract.GasStationEntry.COLUMN_NAME,
             GasStationContract.GasStationEntry.COLUMN_ADDRESS,
+            GasStationContract.GasStationEntry.COLUMN_OPEN,
     };
 
     public static final int INDEX_GASSTATION_NAME = 0;
     public static final int INDEX_GASSTATION_ADDRESS = 1;
+    public static final int INDEX_GASSTATION_OPEN = 2;
 
     private RecyclerView recyclerView;
     private int position = RecyclerView.NO_POSITION;
@@ -65,9 +67,10 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
     }
 
     @Override
-    public void onClick(String detailsPerStation) {
+    public void onClick(String name) {
         Intent intentToStartDetailActivity = new Intent(this, DetailActivity.class);
-        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, detailsPerStation);
+        Uri uriForNameClicked = GasStationContract.GasStationEntry.buildDetailsUriWithName(name);
+        intentToStartDetailActivity.setData(uriForNameClicked);
         startActivity(intentToStartDetailActivity);
     }
 
@@ -80,11 +83,6 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
         recyclerView.setVisibility(View.VISIBLE);
         loadingIndicator.setVisibility(View.INVISIBLE);
     }
-
-    /*private void showErrorMessage() {
-        recyclerView.setVisibility(View.INVISIBLE);
-        errorMessage.setVisibility(View.VISIBLE);
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -136,21 +134,4 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
     public void onLoaderReset(Loader<Cursor> loader) {
         detailsAdapter.swapCursor(null);
     }
-
-
-    /*@Override
-    protected void onStart() {
-        super.onStart();
-
-        if (UPDATED_PREFERENCES) {
-            getSupportLoaderManager().restartLoader(DETAILS_LOADER_ID, null, this);
-            UPDATED_PREFERENCES = false;
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
-    }*/
 }
