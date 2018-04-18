@@ -95,6 +95,7 @@ public class DetailActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    // GERAAKT HIER WEL IN TIJDENS DEBUGGEN, DUS FOUT ZIT MOGELIJK HIER !!!!
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
         switch (loaderId) {
@@ -105,6 +106,8 @@ public class DetailActivity extends AppCompatActivity implements
                 throw new RuntimeException("Loader Not Implemented: " + loaderId);
         }
     }
+
+    // GERAAKT HIER NIET IN TIJDENS DEBUGGEN !!!!
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
