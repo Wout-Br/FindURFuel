@@ -11,11 +11,11 @@ public class GasStationContract {
 
     public static final String CONTENT_AUTHORITY = "com.example.gebruiker.findurfuel";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-    public static final String PATH_WEATHER = "gas_stations";
+    public static final String PATH_GASSTATION = "gas_stations";
 
     public static class GasStationEntry implements BaseColumns {
 
-        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_WEATHER).build();
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_GASSTATION).build();
 
         public static final String TABLE_NAME = "gas_station";
         public static final String COLUMN_NAME = "name";

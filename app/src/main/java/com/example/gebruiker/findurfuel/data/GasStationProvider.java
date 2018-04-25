@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 /**
  * Created by Wout Briels on 25/03/2018.
@@ -17,12 +16,14 @@ public class GasStationProvider extends ContentProvider {
 
     private GasStationDbHelper gasStationDbHelper;
     public static final int CODE_GASSTATION = 100;
+    public static final int CODE_GASSTATION_BY_NAME = 101;
     private static final UriMatcher gUriMatcher = buildUriMatcher();
 
     public static UriMatcher buildUriMatcher() {
         final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = GasStationContract.CONTENT_AUTHORITY;
-        uriMatcher.addURI(authority, GasStationContract.PATH_WEATHER, CODE_GASSTATION);
+        uriMatcher.addURI(authority, GasStationContract.PATH_GASSTATION, CODE_GASSTATION);
+        uriMatcher.addURI(authority, GasStationContract.PATH_GASSTATION + "/*", CODE_GASSTATION_BY_NAME);
 
         return uriMatcher;
     }
@@ -72,13 +73,30 @@ public class GasStationProvider extends ContentProvider {
         Cursor cursor;
 
         int urimatcher = gUriMatcher.match(uri);
-        if (gUriMatcher.match(uri) == CODE_GASSTATION) {        // case structure may be better !!
+        switch (gUriMatcher.match(uri)) {
+            case CODE_GASSTATION: {
+                cursor = gasStationDbHelper.getReadableDatabase().query(GasStationContract.GasStationEntry.TABLE_NAME,
+                        projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            }
+            case CODE_GASSTATION_BY_NAME: {
+                String name = uri.getLastPathSegment();
+                String[] selectionArguments = new String[]{name};
+                cursor = gasStationDbHelper.getReadableDatabase().query(GasStationContract.GasStationEntry.TABLE_NAME,
+                        projection, GasStationContract.GasStationEntry.COLUMN_NAME + " =? ",
+                        selectionArguments, null, null, sortOrder);
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        /*if (gUriMatcher.match(uri) == CODE_GASSTATION) {
             cursor = gasStationDbHelper.getReadableDatabase().query(GasStationContract.GasStationEntry.TABLE_NAME,
                     projection, selection, selectionArgs, null, null, sortOrder);
         }
         else {
             throw new UnsupportedOperationException("Unknown uri: " + uri);
-        }
+        }*/
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
