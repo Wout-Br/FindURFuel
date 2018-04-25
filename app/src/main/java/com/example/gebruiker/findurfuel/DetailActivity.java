@@ -108,7 +108,6 @@ public class DetailActivity extends AppCompatActivity implements
     }
 
     // GERAAKT HIER NIET IN TIJDENS DEBUGGEN !!!!
-
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         boolean cursorHasValidData = false;

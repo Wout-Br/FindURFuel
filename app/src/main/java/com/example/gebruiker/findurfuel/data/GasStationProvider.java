@@ -71,11 +71,14 @@ public class GasStationProvider extends ContentProvider {
                         String[] selectionArgs, String sortOrder) {
         Cursor cursor;
 
-        if (gUriMatcher.match(uri) == CODE_GASSTATION) {
+        int urimatcher = gUriMatcher.match(uri);
+        if (gUriMatcher.match(uri) == CODE_GASSTATION) {        // case structure may be better !!
             cursor = gasStationDbHelper.getReadableDatabase().query(GasStationContract.GasStationEntry.TABLE_NAME,
                     projection, selection, selectionArgs, null, null, sortOrder);
         }
-        else {throw new UnsupportedOperationException("Unknown uri: " + uri);}
+        else {
+            throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
