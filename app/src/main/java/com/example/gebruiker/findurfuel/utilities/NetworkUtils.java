@@ -1,7 +1,10 @@
 package com.example.gebruiker.findurfuel.utilities;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+
+import com.example.gebruiker.findurfuel.data.GasStationPreferences;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,15 +35,13 @@ public final class NetworkUtils {
     final static String APIKEY_PARAM = "key";
 
 
-    public static URL buildUrl(String locationInput) {
+    public static URL buildUrl(Context context) {
+        String locationInput = GasStationPreferences.getPreferredLocation(context);
         String locationUrl = "gas+station+" + locationInput;
         Uri builtUri = Uri.parse(GASSTATIONS_URL).buildUpon()
                 .appendQueryParameter(QUERY_PARAM, locationUrl)
                 .appendQueryParameter(APIKEY_PARAM, key)
-                //.appendQueryParameter(UNITS_PARAM, units)
-                //.appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
                 .build();
-        //Uri builtUri = Uri.parse(GASSTATIONS_URL);      // Weglaten (dit is volledige API)
 
                 URL url = null;
         try {
@@ -49,7 +50,7 @@ public final class NetworkUtils {
             e.printStackTrace();
         }
 
-        Log.v(TAG, "Built URI " + url);
+        Log.v(TAG, "Built URL " + url);
 
         return url;
     }
@@ -63,11 +64,12 @@ public final class NetworkUtils {
             scanner.useDelimiter("\\A");
 
             boolean hasInput = scanner.hasNext();
+            String response = null;
             if (hasInput) {
-                return scanner.next();
-            } else {
-                return null;
+                response = scanner.next();
             }
+            scanner.close();
+            return response;
         } finally {
             urlConnection.disconnect();
         }

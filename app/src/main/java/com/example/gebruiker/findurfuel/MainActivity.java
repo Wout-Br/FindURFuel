@@ -11,16 +11,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.example.gebruiker.findurfuel.data.GasStationContract;
+import com.example.gebruiker.findurfuel.sync.FindURFuelSyncUtils;
 import com.example.gebruiker.findurfuel.utilities.FakeDetailsUtils;
 
 public class MainActivity extends AppCompatActivity implements DetailsAdapter.GasStationDetailsOnClickHandler,
         LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     // String of details showing in main activity list
     public static final String[] MAIN_DETAILS_PROJECTION = {
@@ -44,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FakeDetailsUtils.insertFakeData(this);
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
         LoaderManager.LoaderCallbacks<Cursor> callback = MainActivity.this;
         Bundle bundleForLoader = null;
         getSupportLoaderManager().initLoader(loaderId, bundleForLoader, callback);
+
+        FindURFuelSyncUtils.startImmediateSync(this);
     }
 
     @Override
@@ -80,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
     }
 
     private void showLoading() {
-        recyclerView.setVisibility(View.VISIBLE);
-        loadingIndicator.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+        loadingIndicator.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -94,10 +98,13 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case (R.id.menu_settings):
+                Log.i(TAG, "onOptionsItemSelected: settings");
                 Intent intentForSettings = new Intent(this, SettingsActivity.class);
                 startActivity(intentForSettings);
                 break;
             case  (R.id.menu_refresh):
+                Log.i(TAG, "onOptionsItemSelected: refresh");
+                showLoading();
                 getSupportLoaderManager().restartLoader(DETAILS_LOADER_ID, null, this);
         }
 

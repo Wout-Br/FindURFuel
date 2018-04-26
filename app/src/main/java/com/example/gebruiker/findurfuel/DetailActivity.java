@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 import com.example.gebruiker.findurfuel.data.GasStationContract;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by Wout Briels on 6/03/2018.
  */
@@ -66,7 +64,7 @@ public class DetailActivity extends AppCompatActivity implements
         nameTextView = (TextView) findViewById(R.id.name);
         addressTextView = (TextView) findViewById(R.id.address);
         heightTextView = (TextView) findViewById(R.id.height);
-        widthTextView = (TextView) findViewById(R.id.widht);
+        widthTextView = (TextView) findViewById(R.id.width);
         latTextView = (TextView) findViewById(R.id.lat);
         lngTextView = (TextView) findViewById(R.id.lng);
         openTextView = (TextView) findViewById(R.id.open);
