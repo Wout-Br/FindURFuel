@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
         Bundle bundleForLoader = null;
         getSupportLoaderManager().initLoader(loaderId, bundleForLoader, callback);
 
-        FindURFuelSyncUtils.startImmediateSync(this);
+        FindURFuelSyncUtils.initialize(this);
     }
 
     @Override
