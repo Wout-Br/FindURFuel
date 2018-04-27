@@ -7,7 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.gebruiker.findurfuel.utilities.LogoUtils;
 
 /**
  * Created by Wout Briels on 4/03/2018.
@@ -44,16 +47,18 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
     public void onBindViewHolder(GasStationDetailsAdapterViewHolder gasStationDetailsAdapterViewHolder, int position) {
         gCursor.moveToPosition(position);
 
-        /*******************
-         * Gas Station Summary *
-         *******************/
-
+        // *** Gas station name *** //
         String name = gCursor.getString(MainActivity.INDEX_GASSTATION_NAME);
-        String address = gCursor.getString(MainActivity.INDEX_GASSTATION_ADDRESS);
-        String open = gCursor.getString(MainActivity.INDEX_GASSTATION_OPEN);
+        gasStationDetailsAdapterViewHolder.nameTextView.setText(name);
 
-        String gasStationSummary = name + "   -   " + open + "\n" + address;
-        gasStationDetailsAdapterViewHolder.gasStationTextView.setText(gasStationSummary);
+        // *** Gas station open *** //
+        //String address = gCursor.getString(MainActivity.INDEX_GASSTATION_ADDRESS);
+        String open = gCursor.getString(MainActivity.INDEX_GASSTATION_OPEN).toUpperCase();
+        gasStationDetailsAdapterViewHolder.openTextView.setText(open);
+
+        // *** Gas station icon *** //
+        int logoId = LogoUtils.getLogoForGasStation(name);
+        gasStationDetailsAdapterViewHolder.iconImageView.setImageResource(logoId);
     }
 
     @Override
@@ -71,11 +76,16 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
 
     public class GasStationDetailsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView gasStationTextView;
+        private final TextView nameTextView;
+        private final TextView openTextView;
+        private final ImageView iconImageView;
+
 
         public GasStationDetailsAdapterViewHolder(View view) {
             super(view);
-            gasStationTextView = (TextView) view.findViewById(R.id.gasStationData);
+            nameTextView = (TextView) view.findViewById(R.id.name);
+            openTextView = (TextView) view.findViewById(R.id.open_now);
+            iconImageView = (ImageView) view.findViewById(R.id.gas_station_icon);
             view.setOnClickListener(this);
         }
 

@@ -11,8 +11,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="20sp"
-        android:padding="10dp" />
+        android:paddingBottom="10dp" />
 
     <ProgressBar
         android:id="@+id/loading_indicator"
@@ -20,4 +19,5 @@
         android:layout_width="50dp"
         android:layout_gravity="center"
         android:visibility="invisible" />
+
 </FrameLayout>

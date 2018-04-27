@@ -90,13 +90,6 @@ public class GasStationProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-        /*if (gUriMatcher.match(uri) == CODE_GASSTATION) {
-            cursor = gasStationDbHelper.getReadableDatabase().query(GasStationContract.GasStationEntry.TABLE_NAME,
-                    projection, selection, selectionArgs, null, null, sortOrder);
-        }
-        else {
-            throw new UnsupportedOperationException("Unknown uri: " + uri);
-        }*/
 
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
