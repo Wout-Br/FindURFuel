@@ -29,13 +29,13 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
     // String of details showing in main activity list
     public static final String[] MAIN_DETAILS_PROJECTION = {
             GasStationContract.GasStationEntry.COLUMN_NAME,
-            GasStationContract.GasStationEntry.COLUMN_ADDRESS,
             GasStationContract.GasStationEntry.COLUMN_OPEN,
+            GasStationContract.GasStationEntry.COLUMN_RATING,
     };
 
     public static final int INDEX_GASSTATION_NAME = 0;
-    public static final int INDEX_GASSTATION_ADDRESS = 1;
-    public static final int INDEX_GASSTATION_OPEN = 2;
+    public static final int INDEX_GASSTATION_OPEN = 1;
+    public static final int INDEX_GASSTATION_RATING = 2;
 
     private RecyclerView recyclerView;
     private int position = RecyclerView.NO_POSITION;

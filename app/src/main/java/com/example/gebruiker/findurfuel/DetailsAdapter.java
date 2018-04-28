@@ -52,9 +52,12 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
         gasStationDetailsAdapterViewHolder.nameTextView.setText(name);
 
         // *** Gas station open *** //
-        //String address = gCursor.getString(MainActivity.INDEX_GASSTATION_ADDRESS);
-        String open = gCursor.getString(MainActivity.INDEX_GASSTATION_OPEN).toUpperCase();
-        gasStationDetailsAdapterViewHolder.openTextView.setText(open);
+        String open = gCursor.getString(MainActivity.INDEX_GASSTATION_OPEN);
+        gasStationDetailsAdapterViewHolder.openTextView.setText("OPEN");
+
+        // *** Gas station rating *** //
+        String rating = gCursor.getString(MainActivity.INDEX_GASSTATION_RATING);
+        gasStationDetailsAdapterViewHolder.ratingTextView.setText(rating);
 
         // *** Gas station icon *** //
         int logoId = LogoUtils.getLogoForGasStation(name);
@@ -78,6 +81,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
 
         private final TextView nameTextView;
         private final TextView openTextView;
+        private final TextView ratingTextView;
         private final ImageView iconImageView;
 
 
@@ -85,6 +89,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
             super(view);
             nameTextView = (TextView) view.findViewById(R.id.name);
             openTextView = (TextView) view.findViewById(R.id.open_now);
+            ratingTextView = (TextView) view.findViewById(R.id.rating);
             iconImageView = (ImageView) view.findViewById(R.id.gas_station_icon);
             view.setOnClickListener(this);
         }
