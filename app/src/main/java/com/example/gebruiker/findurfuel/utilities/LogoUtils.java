@@ -1,5 +1,7 @@
 package com.example.gebruiker.findurfuel.utilities;
 
+import android.util.Log;
+
 import com.example.gebruiker.findurfuel.R;
 
 /**
@@ -8,9 +10,12 @@ import com.example.gebruiker.findurfuel.R;
 
 public class LogoUtils {
 
+    private static final String TAG = LogoUtils.class.getSimpleName();
+
     public static int getLogoForGasStation(String name) {
         String splitWord[] = name.split(" ", 2);
         String firstWord = splitWord[0].toLowerCase();
+        Log.d(TAG, name);
 
         if (firstWord.equals("shell")) {
             return R.drawable.shell_logo;

@@ -2,6 +2,7 @@ package com.example.gebruiker.findurfuel.utilities;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.example.gebruiker.findurfuel.data.GasStationContract;
 
@@ -16,6 +17,7 @@ import java.net.HttpURLConnection;
  */
 
 public class GasStationJsonUtils {
+    private static final String TAG = GasStationJsonUtils.class.getSimpleName();
 
     private static final  String GS_LIST = "results";
     private static final String GS_NAME = "name";
@@ -45,23 +47,39 @@ public class GasStationJsonUtils {
             JSONObject singleGasStation = gasStationArray.getJSONObject(i);
             String name = singleGasStation.getString(GS_NAME);
             String address = singleGasStation.getString(GS_ADDRESS);
-            //double rating = singleGasStation.getDouble(GS_RATING);
+
+            double rating = 0;
+            try {
+                rating = singleGasStation.getDouble(GS_RATING);
+            }
+            catch (Exception e) {
+                Log.i(TAG, "Rating not found in api!");
+            }
 
             JSONObject geometryObject = singleGasStation.getJSONObject(GS_GEOMETRY);
             JSONObject locationObject = geometryObject.getJSONObject(GS_LOCATION);
             double lat = locationObject.getDouble(GS_LAT);
             double lng = locationObject.getDouble(GS_LNG);
 
-            /*
-            JSONObject photosObject = singleGasStation.getJSONArray(GS_PHOTOS).getJSONObject(0);
-            double height = photosObject.getDouble(GS_HEIGHT);
-            double width = photosObject.getDouble(GS_WIDTH);
-            */
+            double height = 0;
+            double width = 0;
+            try {
+                JSONObject photosObject = singleGasStation.getJSONArray(GS_PHOTOS).getJSONObject(0);
+                height = photosObject.getDouble(GS_HEIGHT);
+                width = photosObject.getDouble(GS_WIDTH);
+            }
+            catch (Exception e) {
+                Log.i(TAG, "Height and width not found in api!");
+            }
 
-            /*
-            JSONObject openingHoursObject = singleGasStation.getJSONObject(GS_OPENING_HOURS);
-            boolean open_now = openingHoursObject.getBoolean(GS_OPEN);
-            */
+            boolean open_now = false;
+            try {
+                JSONObject openingHoursObject = singleGasStation.getJSONObject(GS_OPENING_HOURS);
+                open_now = openingHoursObject.getBoolean(GS_OPEN);
+            }
+            catch (Exception e) {
+                Log.i(TAG, "Open_now not found in api!");
+            }
 
 
             ContentValues cv = new ContentValues();
@@ -69,10 +87,10 @@ public class GasStationJsonUtils {
             cv.put(GasStationContract.GasStationEntry.COLUMN_ADDRESS, address);
             cv.put(GasStationContract.GasStationEntry.COLUMN_LAT, lat);
             cv.put(GasStationContract.GasStationEntry.COLUMN_LNG, lng);
-            cv.put(GasStationContract.GasStationEntry.COLUMN_HEIGHT, 150);
-            cv.put(GasStationContract.GasStationEntry.COLUMN_WIDTH, 200);
-            cv.put(GasStationContract.GasStationEntry.COLUMN_RATING, 4.5);
-            cv.put(GasStationContract.GasStationEntry.COLUMN_OPEN, "open");
+            cv.put(GasStationContract.GasStationEntry.COLUMN_HEIGHT, height);
+            cv.put(GasStationContract.GasStationEntry.COLUMN_WIDTH, width);
+            cv.put(GasStationContract.GasStationEntry.COLUMN_RATING, rating);
+            cv.put(GasStationContract.GasStationEntry.COLUMN_OPEN, open_now);
 
             gasStationContentValues[i] = cv;
         }

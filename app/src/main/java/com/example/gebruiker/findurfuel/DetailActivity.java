@@ -25,7 +25,7 @@ public class DetailActivity extends AppCompatActivity implements
             GasStationContract.GasStationEntry.COLUMN_NAME,
             GasStationContract.GasStationEntry.COLUMN_ADDRESS,
             GasStationContract.GasStationEntry.COLUMN_HEIGHT,
-            GasStationContract.GasStationEntry.COLUMN_HEIGHT,
+            GasStationContract.GasStationEntry.COLUMN_WIDTH,
             GasStationContract.GasStationEntry.COLUMN_LAT,
             GasStationContract.GasStationEntry.COLUMN_LNG,
             GasStationContract.GasStationEntry.COLUMN_OPEN,
