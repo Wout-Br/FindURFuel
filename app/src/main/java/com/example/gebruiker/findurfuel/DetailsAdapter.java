@@ -24,7 +24,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
     private final GasStationDetailsOnClickHandler gasStationDetailsClickHandler;
 
     public interface GasStationDetailsOnClickHandler {
-        void onClick(String name);
+        void onClick(String address);
     }
 
     public DetailsAdapter(@NonNull Context context, GasStationDetailsOnClickHandler clickHandler) {
@@ -99,8 +99,8 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             gCursor.moveToPosition(adapterPosition);
-            String name = gCursor.getString(MainActivity.INDEX_GASSTATION_NAME);
-            gasStationDetailsClickHandler.onClick(name);
+            String address = gCursor.getString(MainActivity.INDEX_GASSTATION_ADDRESS);
+            gasStationDetailsClickHandler.onClick(address);
         }
     }
 }

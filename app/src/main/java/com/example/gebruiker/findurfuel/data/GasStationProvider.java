@@ -79,10 +79,10 @@ public class GasStationProvider extends ContentProvider {
                 break;
             }
             case CODE_GASSTATION_BY_NAME: {
-                String name = uri.getLastPathSegment();
-                String[] selectionArguments = new String[]{name};
+                String address = uri.getLastPathSegment();
+                String[] selectionArguments = new String[]{address};
                 cursor = gasStationDbHelper.getReadableDatabase().query(GasStationContract.GasStationEntry.TABLE_NAME,
-                        projection, GasStationContract.GasStationEntry.COLUMN_NAME + " =? ",
+                        projection, GasStationContract.GasStationEntry.COLUMN_ADDRESS + " =? ",
                         selectionArguments, null, null, sortOrder);
                 break;
             }

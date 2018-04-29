@@ -18,9 +18,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.example.gebruiker.findurfuel.data.GasStationContract;
-import com.example.gebruiker.findurfuel.sync.FindURFuelSyncTask;
 import com.example.gebruiker.findurfuel.sync.FindURFuelSyncUtils;
-import com.example.gebruiker.findurfuel.utilities.FakeDetailsUtils;
 
 public class MainActivity extends AppCompatActivity implements DetailsAdapter.GasStationDetailsOnClickHandler,
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -74,10 +72,10 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
     }
 
     @Override
-    public void onClick(String name) {
+    public void onClick(String address) {
         Intent intentToStartDetailActivity = new Intent(this, DetailActivity.class);
-        Uri uriForNameClicked = GasStationContract.GasStationEntry.buildDetailsUriWithName(name);
-        intentToStartDetailActivity.setData(uriForNameClicked);
+        Uri uriForItemClicked = GasStationContract.GasStationEntry.buildDetailsUriWithAddress(address);
+        intentToStartDetailActivity.setData(uriForItemClicked);
         startActivity(intentToStartDetailActivity);
     }
 

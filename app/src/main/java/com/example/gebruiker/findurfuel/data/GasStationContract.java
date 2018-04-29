@@ -27,8 +27,8 @@ public class GasStationContract {
         public static final String COLUMN_HEIGHT = "height";
         public static final String COLUMN_WIDTH = "width";
 
-        public static Uri buildDetailsUriWithName(String name) {
-            return CONTENT_URI.buildUpon().appendPath(name).build();
+        public static Uri buildDetailsUriWithAddress(String address) {
+            return CONTENT_URI.buildUpon().appendPath(address).build();
         }
     }
 }
