@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.example.gebruiker.findurfuel.data.GasStationContract;
+import com.example.gebruiker.findurfuel.sync.FindURFuelSyncTask;
 import com.example.gebruiker.findurfuel.sync.FindURFuelSyncUtils;
 import com.example.gebruiker.findurfuel.utilities.FakeDetailsUtils;
 
@@ -31,11 +32,13 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
             GasStationContract.GasStationEntry.COLUMN_NAME,
             GasStationContract.GasStationEntry.COLUMN_OPEN,
             GasStationContract.GasStationEntry.COLUMN_RATING,
+            GasStationContract.GasStationEntry.COLUMN_ADDRESS,
     };
 
     public static final int INDEX_GASSTATION_NAME = 0;
     public static final int INDEX_GASSTATION_OPEN = 1;
     public static final int INDEX_GASSTATION_RATING = 2;
+    public static final int INDEX_GASSTATION_ADDRESS = 3;
 
     private RecyclerView recyclerView;
     private int position = RecyclerView.NO_POSITION;
@@ -79,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
     }
 
     private void showGasStationDataView() {
-        loadingIndicator.setVisibility(View.INVISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
+        loadingIndicator.setVisibility(View.INVISIBLE);
     }
 
     private void showLoading() {
@@ -104,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
                 break;
             case  (R.id.menu_refresh):
                 Log.i(TAG, "onOptionsItemSelected: refresh");
-                showLoading();
                 getSupportLoaderManager().restartLoader(DETAILS_LOADER_ID, null, this);
         }
 

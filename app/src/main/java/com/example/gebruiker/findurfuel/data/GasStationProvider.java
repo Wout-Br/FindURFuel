@@ -72,7 +72,6 @@ public class GasStationProvider extends ContentProvider {
                         String[] selectionArgs, String sortOrder) {
         Cursor cursor;
 
-        int urimatcher = gUriMatcher.match(uri);
         switch (gUriMatcher.match(uri)) {
             case CODE_GASSTATION: {
                 cursor = gasStationDbHelper.getReadableDatabase().query(GasStationContract.GasStationEntry.TABLE_NAME,
