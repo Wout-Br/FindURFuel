@@ -4,8 +4,10 @@
     <modules>
       <module fileurl="file://C:\Users\gebruiker\Documents\2BA IIW B1\App-ontwikkeling\FindURFuelv06.4\FindURFuelv06.1.iml" filepath="C:\Users\gebruiker\Documents\2BA IIW B1\App-ontwikkeling\FindURFuelv06.4\FindURFuelv06.1.iml" />
       <module fileurl="file://C:\Users\gebruiker\Documents\2BA IIW B1\App-ontwikkeling\FindURFuelv09\FindURFuelv06.4.iml" filepath="C:\Users\gebruiker\Documents\2BA IIW B1\App-ontwikkeling\FindURFuelv09\FindURFuelv06.4.iml" />
-      <module fileurl="file://$PROJECT_DIR$/FindURFuelv09.iml" filepath="$PROJECT_DIR$/FindURFuelv09.iml" />
+      <module fileurl="file://C:\Users\gebruiker\Documents\2BA IIW B1\App-ontwikkeling\FindURFuelv10\FindURFuelv09.iml" filepath="C:\Users\gebruiker\Documents\2BA IIW B1\App-ontwikkeling\FindURFuelv10\FindURFuelv09.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FindURFuelv10.iml" filepath="$PROJECT_DIR$/FindURFuelv10.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\gebruiker\Documents\2BA IIW B1\App-ontwikkeling\FindURFuelv10\app\app.iml" filepath="C:\Users\gebruiker\Documents\2BA IIW B1\App-ontwikkeling\FindURFuelv10\app\app.iml" />
     </modules>
   </component>
 </project>

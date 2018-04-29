@@ -1,5 +1,6 @@
 package com.example.gebruiker.findurfuel;
 
+import android.graphics.Color;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.content.Intent;
@@ -121,6 +122,13 @@ public class DetailActivity extends AppCompatActivity implements
 
         // *** Gas station name *** //
         String name = data.getString(INDEX_GASSTATION_NAME);
+        String splitWord[] = name.split(" ");
+        if (splitWord.length > 3) {
+            nameTextView.setTextSize(22);
+        } else {
+            nameTextView.setTextSize(26);
+        }
+        nameTextView.setTextColor(Color.BLUE);
         nameTextView.setText(name);
 
         // *** Gas station address *** //
@@ -132,7 +140,7 @@ public class DetailActivity extends AppCompatActivity implements
         heightTextView.setText(height);
 
         // *** Gas station width *** //
-        String  width = data.getString(INDEX_GASSTATION_WIDTH);
+        String width = data.getString(INDEX_GASSTATION_WIDTH);
         widthTextView.setText(width);
 
         // *** Gas station latitude *** //
@@ -145,10 +153,17 @@ public class DetailActivity extends AppCompatActivity implements
 
         // *** Gas station open *** //
         String open = data.getString(INDEX_GASSTATION_OPEN);
+        if (open.equals("OPEN")) {
+            openTextView.setTextColor(Color.GREEN);
+        }
+        else if (open.equals("CLOSED")) {
+            openTextView.setTextColor(Color.RED);
+        }
         openTextView.setText(open);
 
         // *** Gas station rating *** //
         String rating = data.getString(INDEX_GASSTATION_RATING);
+        ratingTextView.setTextColor(Color.rgb(255, 64, 129));
         ratingTextView.setText(rating);
 
         // *** Gas station icon *** //

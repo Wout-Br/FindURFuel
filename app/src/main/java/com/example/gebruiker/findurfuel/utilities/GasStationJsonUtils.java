@@ -48,9 +48,9 @@ public class GasStationJsonUtils {
             String name = singleGasStation.getString(GS_NAME);
             String address = singleGasStation.getString(GS_ADDRESS);
 
-            double rating = 0;
+            String rating = "";
             try {
-                rating = singleGasStation.getDouble(GS_RATING);
+                rating = singleGasStation.getDouble(GS_RATING)+"";
             }
             catch (Exception e) {
                 Log.i(TAG, "Rating not found in api!");
@@ -58,24 +58,37 @@ public class GasStationJsonUtils {
 
             JSONObject geometryObject = singleGasStation.getJSONObject(GS_GEOMETRY);
             JSONObject locationObject = geometryObject.getJSONObject(GS_LOCATION);
-            double lat = locationObject.getDouble(GS_LAT);
-            double lng = locationObject.getDouble(GS_LNG);
+            String lat = "";
+            String lng = "";
+            try {
+                lat = locationObject.getDouble(GS_LAT) + "";
+                lng = locationObject.getDouble(GS_LNG) + "";
+            }
+            catch (Exception e) {
+                Log.i(TAG, "Latitude and longitude not found in api!");
+            }
 
-            double height = 0;
-            double width = 0;
+
+            String height = "";
+            String width = "";
             try {
                 JSONObject photosObject = singleGasStation.getJSONArray(GS_PHOTOS).getJSONObject(0);
-                height = photosObject.getDouble(GS_HEIGHT);
-                width = photosObject.getDouble(GS_WIDTH);
+                height = photosObject.getDouble(GS_HEIGHT) + "";
+                width = photosObject.getDouble(GS_WIDTH) + "";
             }
             catch (Exception e) {
                 Log.i(TAG, "Height and width not found in api!");
             }
 
-            boolean open_now = false;
+            String open_now = "";
             try {
                 JSONObject openingHoursObject = singleGasStation.getJSONObject(GS_OPENING_HOURS);
-                open_now = openingHoursObject.getBoolean(GS_OPEN);
+                boolean open_now_value = openingHoursObject.getBoolean(GS_OPEN);
+                if (open_now_value) {
+                    open_now = "OPEN";
+                } else {
+                    open_now = "CLOSED";
+                }
             }
             catch (Exception e) {
                 Log.i(TAG, "Open_now not found in api!");

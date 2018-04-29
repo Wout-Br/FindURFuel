@@ -2,6 +2,7 @@ package com.example.gebruiker.findurfuel;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -53,7 +54,13 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.GasStati
 
         // *** Gas station open *** //
         String open = gCursor.getString(MainActivity.INDEX_GASSTATION_OPEN);
-        gasStationDetailsAdapterViewHolder.openTextView.setText("OPEN");
+        if (open.equals("OPEN")) {
+            gasStationDetailsAdapterViewHolder.openTextView.setTextColor(Color.GREEN);
+        }
+        else if (open.equals("CLOSED")) {
+            gasStationDetailsAdapterViewHolder.openTextView.setTextColor(Color.RED);
+        }
+        gasStationDetailsAdapterViewHolder.openTextView.setText(open);
 
         // *** Gas station rating *** //
         String rating = gCursor.getString(MainActivity.INDEX_GASSTATION_RATING);
