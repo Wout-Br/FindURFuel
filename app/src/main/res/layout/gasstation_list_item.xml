@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/gas_station_icon"
-        android:layout_width="41dp"
-        android:layout_height="38dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"

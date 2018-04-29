@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gebruiker.findurfuel.data.GasStationContract;
+import com.example.gebruiker.findurfuel.utilities.LogoUtils;
 
 /**
  * Created by Wout Briels on 6/03/2018.
@@ -55,6 +57,7 @@ public class DetailActivity extends AppCompatActivity implements
     private TextView lngTextView;
     private TextView openTextView;
     private TextView ratingTextView;
+    private ImageView iconImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,7 @@ public class DetailActivity extends AppCompatActivity implements
         lngTextView = (TextView) findViewById(R.id.lng);
         openTextView = (TextView) findViewById(R.id.open);
         ratingTextView = (TextView) findViewById(R.id.rating);
+        iconImageView = (ImageView) findViewById(R.id.imageView);
 
         gUri = getIntent().getData();
         if (gUri == null) throw new NullPointerException("URI can't be null");
@@ -115,29 +119,41 @@ public class DetailActivity extends AppCompatActivity implements
             return;
         }
 
+        // *** Gas station name *** //
         String name = data.getString(INDEX_GASSTATION_NAME);
         nameTextView.setText(name);
 
+        // *** Gas station address *** //
         String address = data.getString(INDEX_GASSTATION_ADDRESS);
         addressTextView.setText(address);
 
+        // *** Gas station height *** //
         String height = data.getString(INDEX_GASSTATION_HEIGHT);
         heightTextView.setText(height);
 
+        // *** Gas station width *** //
         String  width = data.getString(INDEX_GASSTATION_WIDTH);
         widthTextView.setText(width);
 
+        // *** Gas station latitude *** //
         String lat = data.getString(INDEX_GASSTATION_LAT);
         latTextView.setText(lat);
 
+        // *** Gas station longitude *** //
         String lng = data.getString(INDEX_GASSTATION_LNG);
         lngTextView.setText(lng);
 
+        // *** Gas station open *** //
         String open = data.getString(INDEX_GASSTATION_OPEN);
         openTextView.setText(open);
 
+        // *** Gas station rating *** //
         String rating = data.getString(INDEX_GASSTATION_RATING);
         ratingTextView.setText(rating);
+
+        // *** Gas station icon *** //
+        int logoId = LogoUtils.getLogoForGasStation(name);
+        iconImageView.setImageResource(logoId);
     }
 
     @Override
