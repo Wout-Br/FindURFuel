@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
             GasStationContract.GasStationEntry.COLUMN_NAME,
             GasStationContract.GasStationEntry.COLUMN_OPEN,
             GasStationContract.GasStationEntry.COLUMN_RATING,
+            // In projection for unique element in database when clicked on item.
             GasStationContract.GasStationEntry.COLUMN_ADDRESS,
     };
 
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
     private static final int DETAILS_LOADER_ID = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {        // Bundle om informatie te bewaren als app gedestroyed wordt!!
+    protected void onCreate(Bundle savedInstanceState) {        // Bundle to safe data when app destroyed!!
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
