@@ -10,5 +10,10 @@
 
     <string name="error_message">An error has occured :( Please try again!</string>
     <string name="content_authority">com.example.gebruiker.findurfuel</string>
+    <string name="activity_detail_height">Height:</string>
+    <string name="activity_detail_width">Width:</string>
+    <string name="activity_detail_latitude">Latitude:</string>
+    <string name="activity_detail_longitude">Longitude:</string>
+    <string name="activity_detail_rating">Rating:</string>
 
 </resources>
