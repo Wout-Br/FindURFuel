@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
                 break;
             case  (R.id.menu_refresh):
                 Log.i(TAG, "onOptionsItemSelected: refresh");
+                showLoading();
                 FindURFuelSyncUtils.startImmediateSync(this);
         }
 
