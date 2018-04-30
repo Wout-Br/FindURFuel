@@ -11,8 +11,8 @@
 
     <item
         android:id="@+id/menu_refresh"
-        android:title="@string/menu_refresh"
+        android:icon="@drawable/icon_refresh"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom"
-        />
+        android:title="@string/menu_refresh"
+        app:showAsAction="ifRoom" />
 </menu>
