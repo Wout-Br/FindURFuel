@@ -157,7 +157,7 @@
             android:layout_marginTop="26dp"
             android:text="@string/activity_detail_rating"
             android:textSize="22sp"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorRating"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Width" />
 
@@ -169,6 +169,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="0dp"
             android:textSize="22sp"
+            android:textColor="@color/colorRating"
             app:layout_constraintStart_toEndOf="@+id/Rating"
             app:layout_constraintTop_toTopOf="@+id/Rating" />
 

@@ -163,7 +163,6 @@ public class DetailActivity extends AppCompatActivity implements
 
         // *** Gas station rating *** //
         String rating = data.getString(INDEX_GASSTATION_RATING);
-        ratingTextView.setTextColor(Color.rgb(255, 64, 129));
         ratingTextView.setText(rating);
 
         // *** Gas station icon *** //
