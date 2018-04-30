@@ -1,12 +1,17 @@
 package com.example.gebruiker.findurfuel;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (!isConnected(this)) {
+            buildDialog(this).show();
+        }
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -70,6 +79,37 @@ public class MainActivity extends AppCompatActivity implements DetailsAdapter.Ga
         getSupportLoaderManager().initLoader(loaderId, bundleForLoader, callback);
 
         FindURFuelSyncUtils.initialize(this);
+    }
+
+    public boolean isConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            android.net.NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            android.net.NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+            if ((mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public AlertDialog.Builder buildDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("No Internet Connection");
+        builder.setMessage("Make sure wifi or mobile data is turned on to get current data!");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        return builder;
     }
 
     @Override
