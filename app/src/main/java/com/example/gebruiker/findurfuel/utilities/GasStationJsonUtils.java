@@ -32,8 +32,6 @@ public class GasStationJsonUtils {
     private static final String GS_OPENING_HOURS = "opening_hours";
     private static final String GS_OPEN = "open_now";
     private static final String GS_RATING = "rating";
-    private static final String GS_TYPES = "types";
-    private static final String GS_ICON = "icon";
 
 
     public static ContentValues[] getJsonGasStationContentValues(Context context, String detailsJsonString) throws JSONException {
